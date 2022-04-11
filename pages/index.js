@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
 
+import Nav from '../shared/components/Nav';
 import CanvasLayerOne from '../shared/components/CanvasLayerOne';
 import CanvasLayerTwo from '../shared/components/CanvasLayerTwo';
 
@@ -57,6 +58,8 @@ export default function Home() {
             </Head>
 
             <div>
+                <Nav />
+
                 <div>{timer}</div>
                 <div className="canvas-container">
                     <CanvasLayerTwo pixels={pixels} />
