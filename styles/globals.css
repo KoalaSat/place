@@ -15,3 +15,16 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.canvas-container {
+    position: relative;
+    height: 340px;
+    width: 340px;
+}
+
+.canvas-container canvas {
+    border: 1px solid #000000;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
