@@ -21,8 +21,7 @@ const CanvasLayerOne = ({ setSelectedPixel }) => {
 
             setSelectedPixel({
                 x: pixelX,
-                y: pixelY,
-                color: '#000000'
+                y: pixelY
             });
         };
 

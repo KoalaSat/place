@@ -16,6 +16,19 @@ a {
     box-sizing: border-box;
 }
 
+.color-square {
+    border: 1px solid #808080;
+    display: block;
+    width: 24px;
+    height: 24px;
+
+    cursor: pointer;
+}
+
+input:checked + .color-square {
+    border: 1px solid #ff0000;
+}
+
 .canvas-container {
     position: relative;
     height: 340px;
@@ -27,4 +40,8 @@ a {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.d-none {
+    display: none;
 }
