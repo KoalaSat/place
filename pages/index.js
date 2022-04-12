@@ -6,6 +6,7 @@ import CanvasLayerOne from '../shared/components/CanvasLayerOne';
 import CanvasLayerTwo from '../shared/components/CanvasLayerTwo';
 
 import useTimer from '../shared/hooks/useTimer';
+import { useAuth } from '../shared/contexts/authUserContext';
 
 const COLORS = [
     '#222222',
@@ -49,6 +50,8 @@ export default function Home() {
         }, 1000);
     };
 
+    const { authUser } = useAuth();
+
     return (
         <div>
             <Head>
@@ -86,7 +89,9 @@ export default function Home() {
                         );
                     })}
 
-                    <button disabled={timer !== 0}>place</button>
+                    <button disabled={timer !== 0 || authUser !== null}>
+                        place
+                    </button>
                 </form>
             </div>
         </div>
