@@ -39,11 +39,13 @@ const Nav = () => {
             });
     };
 
-    const { authUser, continueWithGoogle } = useAuth();
+    const { authUser, continueWithGoogle, signOutUser } = useAuth();
 
     return (
         <nav>
-            {authUser ? null : (
+            {authUser ? (
+                <button onClick={signOutUser}>sign out</button>
+            ) : (
                 <button onClick={handleContinueWithGoogle}>
                     continue with google
                 </button>
