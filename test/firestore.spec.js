@@ -6,7 +6,9 @@ const {
 } = require('@firebase/rules-unit-testing');
 const {
     collection,
+    doc,
     addDoc,
+    setDoc,
     setLogLevel,
     serverTimestamp
 } = require('firebase/firestore');
@@ -37,7 +39,7 @@ beforeEach(async () => {
 });
 
 describe('create pixel', () => {
-    it('should let anyone who is authenticated create', async () => {
+    it('should only be created by authenticated users', async () => {
         const unauthedDB = testEnvironment.unauthenticatedContext().firestore();
         await assertFails(
             addDoc(collection(unauthedDB, 'pixels'), {
@@ -74,7 +76,7 @@ describe('create pixel', () => {
             })
         );
 
-        await assertSucceeds(
+        await assertFails(
             addDoc(collection(authedDB, 'pixels'), {
                 pixel: 0,
                 previousPixels: [],
@@ -150,6 +152,144 @@ describe('create pixel', () => {
                 previousPixels: [],
                 createdAt: serverTimestamp(),
                 lastUpdated: serverTimestamp()
+            })
+        );
+    });
+});
+
+describe('create user', async () => {
+    it('should only be created by authenticated users', async () => {
+        await testEnvironment.withSecurityRulesDisabled(async context => {
+            await setDoc(doc(context.firestore(), 'pixels', '1'), {
+                pixel: 0,
+                previousPixels: [],
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
+        });
+
+        const unauthedDB = testEnvironment.unauthenticatedContext().firestore();
+        await assertFails(
+            addDoc(collection(unauthedDB, 'users'), {
+                pixel: '1',
+                createdAt: serverTimestamp()
+            })
+        );
+
+        const authedDB = testEnvironment
+            .authenticatedContext('user')
+            .firestore();
+        await assertSucceeds(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1',
+                createdAt: serverTimestamp()
+            })
+        );
+    });
+
+    it('should only have all required fields', async () => {
+        await testEnvironment.withSecurityRulesDisabled(async context => {
+            await setDoc(doc(context.firestore(), 'pixels', '1'), {
+                pixel: 0,
+                previousPixels: [],
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
+        });
+
+        const authedDB = testEnvironment
+            .authenticatedContext('user')
+            .firestore();
+
+        await assertFails(
+            addDoc(collection(authedDB, 'users'), {
+                createdAt: serverTimestamp()
+            })
+        );
+
+        await assertFails(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1'
+            })
+        );
+
+        await assertFails(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1',
+                createdAt: serverTimestamp(),
+                forbidden: 'a'
+            })
+        );
+
+        await assertSucceeds(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1',
+                createdAt: serverTimestamp()
+            })
+        );
+    });
+
+    it('should only have required data types', async () => {
+        await testEnvironment.withSecurityRulesDisabled(async context => {
+            await setDoc(doc(context.firestore(), 'pixels', '1'), {
+                pixel: 0,
+                previousPixels: [],
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
+        });
+
+        const authedDB = testEnvironment
+            .authenticatedContext('user')
+            .firestore();
+
+        await assertFails(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: 1,
+                createdAt: serverTimestamp()
+            })
+        );
+
+        await assertFails(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1',
+                createdAt: new Date()
+            })
+        );
+
+        await assertSucceeds(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1',
+                createdAt: serverTimestamp()
+            })
+        );
+    });
+
+    it('should only allow real pixels', async () => {
+        await testEnvironment.withSecurityRulesDisabled(async context => {
+            await setDoc(doc(context.firestore(), 'pixels', '1'), {
+                pixel: 0,
+                previousPixels: [],
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
+        });
+
+        const authedDB = testEnvironment
+            .authenticatedContext('user')
+            .firestore();
+
+        await assertFails(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: 'fakePixel',
+                createdAt: serverTimestamp()
+            })
+        );
+
+        await assertSucceeds(
+            addDoc(collection(authedDB, 'users'), {
+                pixel: '1',
+                createdAt: serverTimestamp()
             })
         );
     });
