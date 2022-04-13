@@ -9,6 +9,8 @@ const {
     doc,
     addDoc,
     setDoc,
+    updateDoc,
+    arrayUnion,
     setLogLevel,
     serverTimestamp
 } = require('firebase/firestore');
@@ -152,6 +154,343 @@ describe('create pixel', () => {
                 previousPixels: [],
                 createdAt: serverTimestamp(),
                 lastUpdated: serverTimestamp()
+            })
+        );
+    });
+});
+
+describe('update pixel', async () => {
+    it('should only be updated by authenticated users', async () => {
+        await testEnvironment.withSecurityRulesDisabled(async context => {
+            await setDoc(doc(context.firestore(), 'pixels', '1'), {
+                pixel: 0,
+                previousPixels: [],
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
+        });
+
+        const unauthedDB = testEnvironment.unauthenticatedContext().firestore();
+        await assertFails(
+            updateDoc(doc(unauthedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion(0)
+            })
+        );
+
+        const authedDB = testEnvironment
+            .authenticatedContext('user')
+            .firestore();
+        await assertSucceeds(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion(0)
+            })
+        );
+    });
+
+    it('should only update allowed fields', async () => {
+        await testEnvironment.withSecurityRulesDisabled(async context => {
+            await setDoc(doc(context.firestore(), 'pixels', '1'), {
+                pixel: 0,
+                previousPixels: [],
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
+        });
+
+        const authedDB = testEnvironment
+            .authenticatedContext('user')
+            .firestore();
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: -1,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 341,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: -1,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 341,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: 'orange'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    forbidden: true
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: new Date(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: -1,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 341,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: -1,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 341,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: 'orange',
+                    createdAt: new Date()
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: 0
+                })
+            })
+        );
+
+        await assertFails(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date(),
+                    forbidden: true
+                })
+            })
+        );
+
+        await assertSucceeds(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion(0)
+            })
+        );
+
+        await assertSucceeds(
+            updateDoc(doc(authedDB, 'pixels', '1'), {
+                pixel: {
+                    x: 0,
+                    y: 0,
+                    color: '#222222'
+                },
+                lastUpdated: serverTimestamp(),
+                previousPixels: arrayUnion({
+                    x: 0,
+                    y: 0,
+                    color: '#222222',
+                    createdAt: new Date()
+                })
             })
         );
     });

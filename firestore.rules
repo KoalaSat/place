@@ -6,24 +6,61 @@ service cloud.firestore {
     }
 
     match /pixels/{pixelID} {
+      allow read: if true;
       allow create: if request.auth != null &&
-        createWithRequiredFields(['pixel', 'previousPixels', 'createdAt', 'lastUpdated']) &&
+        createWithRequiredFields(request.resource.data, ['pixel', 'previousPixels', 'createdAt', 'lastUpdated']) &&
         request.resource.data.pixel == 0 &&
         (request.resource.data.previousPixels is list && request.resource.data.previousPixels.size() == 0) &&
         (request.resource.data.createdAt is timestamp && request.resource.data.createdAt == request.time) &&
         (request.resource.data.lastUpdated is timestamp && request.resource.data.lastUpdated == request.time);
+      allow update: if request.auth != null &&
+        (request.resource.data.lastUpdated is timestamp && request.resource.data.lastUpdated == request.time) &&
+        request.time >= resource.data.lastUpdated + duration.value(60, 's') &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pixel', 'previousPixels', 'lastUpdated']) &&
+        (validPixel(request.resource.data.pixel) && createWithRequiredFields(request.resource.data.pixel, ['x', 'y', 'color'])) &&
+        (request.resource.data.previousPixels.size() == resource.data.previousPixels.size() + 1 && validPreviousPixel());
+        
+        function validPreviousPixel () {
+          let pixel = request.resource.data.previousPixels[request.resource.data.previousPixels.size() - 1];
+
+          return pixel == 0 || (createWithRequiredFields(pixel, ['x', 'y', 'color', 'createdAt']) && validPixel(pixel) && pixel.createdAt is timestamp);
+        }
+
+        function validPixel (pixel) {
+          return pixel is map &&
+            (pixel.x is int && pixel.x <= 340 && pixel.x >= 0) &&
+            (pixel.y is int && pixel.y <= 340 && pixel.y >= 0) &&
+            (pixel.color is string && pixel.color in [
+                '#222222',
+                '#E4E4E4',
+                '#888888',
+                '#E50000',
+                '#E59500',
+                '#A06A42',
+                '#E5D900',
+                '#02BE01',
+                '#94E044',
+                '#00D3DD',
+                '#820080',
+                '#0083C7',
+                '#FFFFFF',
+                '#FFA7D1',
+                '#0000EA',
+                '#CF6EE4'
+            ]);
+        }
     }
 
     match /users/{userID} {
+      allow read: if request.auth.uid == userID;
       allow create: if request.auth != null &&
-        createWithRequiredFields(['pixel', 'createdAt']) &&
+        createWithRequiredFields(request.resource.data, ['pixel', 'createdAt']) &&
         (request.resource.data.pixel is string && exists(/databases/$(database)/documents/pixels/$(request.resource.data.pixel))) &&
         (request.resource.data.createdAt is timestamp && request.resource.data.createdAt == request.time);
     }
 
-    function createWithRequiredFields (requiredFields) {
-        return request.resource.data.keys().hasAll(requiredFields) &&
-          request.resource.data.keys().hasOnly(requiredFields);
+    function createWithRequiredFields (data, requiredFields) {
+        return data.keys().hasAll(requiredFields) && data.keys().hasOnly(requiredFields);
     }
   }
 }
