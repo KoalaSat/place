@@ -41,7 +41,7 @@ export default function Home() {
     const [selectedPixel, setSelectedPixel] = useState(null);
     const [selectedPixelColor, setSelectedPixelColor] = useState(COLORS[0]);
 
-    const { pixels, pixel } = usePixelsContext();
+    const { pixels } = usePixelsContext();
     const { timer, setTimer, timerIntervalFunction } = useTimer();
     const handlePlacePixel = event => {
         event.preventDefault();
@@ -71,6 +71,7 @@ export default function Home() {
         }, 1000);
     };
 
+    const { authUser, pixel } = useAuth();
     useEffect(() => {
         if (pixel !== null && pixel.lastUpdated) {
             const amountOfTimeSinceLastPlace =
@@ -83,8 +84,6 @@ export default function Home() {
             }
         }
     }, [pixel]);
-
-    const { authUser } = useAuth();
 
     return (
         <div>
