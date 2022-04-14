@@ -1,13 +1,17 @@
 const CanvasInformation = ({ authUser, timer }) => {
     if (authUser === null) {
-        return <p className="fw-800">log in to start placing pixels</p>;
+        return (
+            <p className="mb-2 fw-800 t-center">
+                log in to start placing pixels
+            </p>
+        );
     }
     if (timer === 0) {
-        return <p className="fw-800">place a pixel</p>;
+        return <p className="mb-2 fw-800 t-center">place a pixel</p>;
     }
 
     return (
-        <p>
+        <p className="mb-2 t-center">
             next pixel in: <span className="fw-800">{timer} seconds</span>
         </p>
     );

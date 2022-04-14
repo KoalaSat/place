@@ -78,6 +78,14 @@ input:checked + .color-square {
     font-weight: 800;
 }
 
+.mb-2 {
+    margin-bottom: 16px;
+}
+
+.t-center {
+    text-align: center;
+}
+
 @media (min-width: 1200px) {
     .container {
         margin: 24px auto;
