@@ -70,6 +70,13 @@ input:checked + .color-square {
     flex-wrap: wrap;
 }
 
+.place-button {
+    border: 1px solid #000;
+    border-radius: 20px;
+    padding: 12px 8px;
+    width: 100%;
+}
+
 .d-none {
     display: none;
 }

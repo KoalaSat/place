@@ -127,7 +127,10 @@ export default function Home() {
                                 );
                             })}
                         </div>
-                        <button disabled={timer !== 0 || authUser === null}>
+                        <button
+                            className="place-button"
+                            disabled={timer !== 0 || authUser === null}
+                        >
                             place
                         </button>
                     </form>
