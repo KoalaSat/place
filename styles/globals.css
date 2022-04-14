@@ -71,10 +71,18 @@ input:checked + .color-square {
 }
 
 .place-button {
-    border: 1px solid #000;
+    border: 1px solid #000000;
     border-radius: 20px;
     padding: 12px 8px;
     width: 100%;
+}
+
+.continue-with-google-button {
+    border: 1px solid #000000;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
 }
 
 .d-none {
@@ -83,6 +91,10 @@ input:checked + .color-square {
 
 .fw-800 {
     font-weight: 800;
+}
+
+.mr-1 {
+    margin-right: 8px;
 }
 
 .mb-2 {
