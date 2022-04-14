@@ -105,27 +105,28 @@ export default function Home() {
                     </div>
 
                     <form onSubmit={handlePlacePixel}>
-                        {COLORS.map(color => {
-                            return (
-                                <div key={color}>
-                                    <input
-                                        onClick={() =>
-                                            setSelectedPixelColor(color)
-                                        }
-                                        className="d-none"
-                                        type="radio"
-                                        name="pixel-color"
-                                        id={color}
-                                    />
-                                    <label
-                                        style={{ backgroundColor: color }}
-                                        className="color-square"
-                                        htmlFor={color}
-                                    ></label>
-                                </div>
-                            );
-                        })}
-
+                        <div className="colors-container">
+                            {COLORS.map(color => {
+                                return (
+                                    <div key={color}>
+                                        <input
+                                            onClick={() =>
+                                                setSelectedPixelColor(color)
+                                            }
+                                            className="d-none"
+                                            type="radio"
+                                            name="pixel-color"
+                                            id={color}
+                                        />
+                                        <label
+                                            style={{ backgroundColor: color }}
+                                            className="color-square"
+                                            htmlFor={color}
+                                        ></label>
+                                    </div>
+                                );
+                            })}
+                        </div>
                         <button disabled={timer !== 0 || authUser === null}>
                             place
                         </button>
