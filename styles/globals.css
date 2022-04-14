@@ -80,7 +80,7 @@ input:checked + .color-square {
 
 .place-button {
     border: 1px solid #000000;
-    border-radius: 20px;
+    border-radius: 24px;
     padding: 12px 8px;
     width: 100%;
 }
