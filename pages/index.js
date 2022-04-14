@@ -80,7 +80,7 @@ export default function Home() {
             if (amountOfTimeSinceLastPlace >= 60) {
                 setTimer(0);
             } else {
-                setTimer(60 - Math.ceil(amountOfTimeSinceLastPlace));
+                setTimer(60 - Math.floor(amountOfTimeSinceLastPlace));
             }
         }
     }, [pixel]);
