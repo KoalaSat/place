@@ -105,7 +105,7 @@ export default function Home() {
                     </div>
 
                     <form onSubmit={handlePlacePixel}>
-                        <div className="colors-container">
+                        <div className="colors-container mb-2">
                             {COLORS.map(color => {
                                 return (
                                     <div key={color}>
