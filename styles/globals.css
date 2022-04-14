@@ -8,6 +8,10 @@ body {
 }
 
 button {
+    border: none;
+
+    background-color: transparent;
+    cursor: pointer;
     font-family: inherit;
     font-size: 18px;
 }
