@@ -96,37 +96,41 @@ export default function Home() {
             <div className="container">
                 <Nav />
 
-                <CanvasInformation authUser={authUser} timer={timer} />
+                <div className="app-container">
+                    <CanvasInformation authUser={authUser} timer={timer} />
 
-                <div className="canvas-container">
-                    <CanvasLayerTwo pixels={pixels} />
-                    <CanvasLayerOne setSelectedPixel={setSelectedPixel} />
+                    <div className="canvas-container">
+                        <CanvasLayerTwo pixels={pixels} />
+                        <CanvasLayerOne setSelectedPixel={setSelectedPixel} />
+                    </div>
+
+                    <form onSubmit={handlePlacePixel}>
+                        {COLORS.map(color => {
+                            return (
+                                <div key={color}>
+                                    <input
+                                        onClick={() =>
+                                            setSelectedPixelColor(color)
+                                        }
+                                        className="d-none"
+                                        type="radio"
+                                        name="pixel-color"
+                                        id={color}
+                                    />
+                                    <label
+                                        style={{ backgroundColor: color }}
+                                        className="color-square"
+                                        htmlFor={color}
+                                    ></label>
+                                </div>
+                            );
+                        })}
+
+                        <button disabled={timer !== 0 || authUser === null}>
+                            place
+                        </button>
+                    </form>
                 </div>
-
-                <form onSubmit={handlePlacePixel}>
-                    {COLORS.map(color => {
-                        return (
-                            <div key={color}>
-                                <input
-                                    onClick={() => setSelectedPixelColor(color)}
-                                    className="d-none"
-                                    type="radio"
-                                    name="pixel-color"
-                                    id={color}
-                                />
-                                <label
-                                    style={{ backgroundColor: color }}
-                                    className="color-square"
-                                    htmlFor={color}
-                                ></label>
-                            </div>
-                        );
-                    })}
-
-                    <button disabled={timer !== 0 || authUser === null}>
-                        place
-                    </button>
-                </form>
             </div>
         </div>
     );

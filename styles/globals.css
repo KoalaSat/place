@@ -46,6 +46,10 @@ input:checked + .color-square {
     margin: 24px;
 }
 
+.app-container {
+    margin: 0 auto;
+}
+
 .canvas-container {
     position: relative;
     height: 340px;
