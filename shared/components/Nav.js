@@ -17,7 +17,7 @@ const Nav = () => {
     return (
         <nav>
             {authUser ? (
-                <button onClick={signOutUser}>sign out</button>
+                <button onClick={signOutUser}>log out</button>
             ) : (
                 <button onClick={handleContinueWithGoogle}>
                     continue with google
