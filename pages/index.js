@@ -117,6 +117,9 @@ export default function Home() {
                                             type="radio"
                                             name="pixel-color"
                                             id={color}
+                                            defaultChecked={
+                                                color === selectedPixelColor
+                                            }
                                         />
                                         <label
                                             style={{ backgroundColor: color }}
