@@ -42,6 +42,10 @@ input:checked + .color-square {
     border: 1px solid #ff0000;
 }
 
+.container {
+    margin: 24px;
+}
+
 .canvas-container {
     position: relative;
     height: 340px;
@@ -57,4 +61,11 @@ input:checked + .color-square {
 
 .d-none {
     display: none;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        margin: 24px auto;
+        max-width: 1200px;
+    }
 }

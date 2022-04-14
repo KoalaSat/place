@@ -93,7 +93,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div>
+            <div className="container">
                 <Nav />
 
                 <CanvasInformation authUser={authUser} timer={timer} />
