@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
 import Nav from '../shared/components/Nav';
+import CanvasInformation from '../shared/components/CanvasInformation';
 import CanvasLayerOne from '../shared/components/CanvasLayerOne';
 import CanvasLayerTwo from '../shared/components/CanvasLayerTwo';
 
 import useTimer from '../shared/hooks/useTimer';
 import { useAuth } from '../shared/contexts/authUserContext';
+import { usePixelsContext } from '../shared/contexts/pixelsContext';
 
 import {
     arrayUnion,
@@ -15,8 +17,6 @@ import {
     serverTimestamp,
     updateDoc
 } from 'firebase/firestore';
-
-import { usePixelsContext } from '../shared/contexts/pixelsContext';
 
 const COLORS = [
     '#222222',
@@ -66,11 +66,23 @@ export default function Home() {
         }
 
         setSelectedPixel(null);
-        setTimer(60);
         const timerInterval = setInterval(() => {
             timerIntervalFunction(timerInterval);
         }, 1000);
     };
+
+    useEffect(() => {
+        if (pixel !== null && pixel.lastUpdated) {
+            const amountOfTimeSinceLastPlace =
+                new Date().getTime() / 1000 - pixel.lastUpdated.seconds;
+
+            if (amountOfTimeSinceLastPlace >= 60) {
+                setTimer(0);
+            } else {
+                setTimer(60 - Math.ceil(amountOfTimeSinceLastPlace));
+            }
+        }
+    }, [pixel]);
 
     const { authUser } = useAuth();
 
@@ -85,7 +97,8 @@ export default function Home() {
             <div>
                 <Nav />
 
-                <div>{timer}</div>
+                <CanvasInformation authUser={authUser} timer={timer} />
+
                 <div className="canvas-container">
                     <CanvasLayerTwo pixels={pixels} />
                     <CanvasLayerOne setSelectedPixel={setSelectedPixel} />
