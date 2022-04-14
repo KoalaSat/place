@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import ThemeSelector from './ThemeSelector';
+
 import { useAuth } from '../contexts/authUserContext';
 
 const Nav = () => {
@@ -16,6 +18,8 @@ const Nav = () => {
 
     return (
         <nav>
+            <ThemeSelector />
+
             {authUser ? (
                 <button onClick={signOutUser}>log out</button>
             ) : (

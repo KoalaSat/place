@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
@@ -9,6 +13,7 @@ body {
 
 button {
     border: none;
+    padding: 0;
 
     background-color: transparent;
     cursor: pointer;
@@ -16,17 +21,20 @@ button {
     font-size: 18px;
 }
 
+button:disabled {
+    opacity: 0.5;
+    color: inherit;
+}
+
 nav {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: end;
 }
 
 a {
     color: inherit;
     text-decoration: none;
-}
-
-* {
-    box-sizing: border-box;
 }
 
 .color-square {
@@ -85,6 +93,11 @@ input:checked + .color-square {
     padding: 4px 8px;
 }
 
+.icon {
+    height: 24px;
+    width: 24px;
+}
+
 .d-none {
     display: none;
 }
@@ -103,6 +116,24 @@ input:checked + .color-square {
 
 .t-center {
     text-align: center;
+}
+
+.dark {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.dark svg {
+    fill: #ffffff;
+}
+
+.dark button {
+    color: #ffffff;
+}
+
+.dark .continue-with-google-button,
+.dark .place-button {
+    border-color: #ffffff;
 }
 
 @media (min-width: 1200px) {

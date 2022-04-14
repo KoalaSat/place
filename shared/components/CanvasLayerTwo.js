@@ -13,6 +13,12 @@ const CanvasLayerTwo = ({ pixels }) => {
     };
 
     useEffect(() => {
+        const context = canvasRef.current.getContext('2d');
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, 340, 340);
+    }, []);
+
+    useEffect(() => {
         for (let i = 0; i < pixels.length; i++) {
             const pixel = pixels[i].pixel;
 
