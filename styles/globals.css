@@ -40,7 +40,7 @@ a {
 }
 
 input:checked + .color-square {
-    border: 1px solid #ff0000;
+    border: 2px solid #7a0000;
 }
 
 .container {
