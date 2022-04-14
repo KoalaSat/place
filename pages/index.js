@@ -8,6 +8,16 @@ import CanvasLayerTwo from '../shared/components/CanvasLayerTwo';
 import useTimer from '../shared/hooks/useTimer';
 import { useAuth } from '../shared/contexts/authUserContext';
 
+import {
+    arrayUnion,
+    doc,
+    getFirestore,
+    serverTimestamp,
+    updateDoc
+} from 'firebase/firestore';
+
+import { usePixelsContext } from '../shared/contexts/pixelsContext';
+
 const COLORS = [
     '#222222',
     '#E4E4E4',
@@ -31,18 +41,30 @@ export default function Home() {
     const [selectedPixel, setSelectedPixel] = useState(null);
     const [selectedPixelColor, setSelectedPixelColor] = useState(COLORS[0]);
 
-    const [pixels, setPixels] = useState([]);
+    const { pixels, pixel } = usePixelsContext();
     const { timer, setTimer, timerIntervalFunction } = useTimer();
     const handlePlacePixel = event => {
         event.preventDefault();
 
         if (!selectedPixel) return;
+        const db = getFirestore();
+        if (pixel.pixel === 0) {
+            updateDoc(doc(db, 'pixels', pixel.id), {
+                pixel: { ...selectedPixel, color: selectedPixelColor },
+                previousPixels: arrayUnion(0),
+                lastUpdated: serverTimestamp()
+            });
+        } else {
+            updateDoc(doc(db, 'pixels', pixel.id), {
+                pixel: { ...selectedPixel, color: selectedPixelColor },
+                previousPixels: arrayUnion({
+                    ...pixel.pixel,
+                    createdAt: pixel.lastUpdated
+                }),
+                lastUpdated: serverTimestamp()
+            });
+        }
 
-        const clonePixels = JSON.parse(JSON.stringify(pixels));
-        setPixels([
-            ...clonePixels,
-            { ...selectedPixel, color: selectedPixelColor }
-        ]);
         setSelectedPixel(null);
         setTimer(60);
         const timerInterval = setInterval(() => {
@@ -89,7 +111,7 @@ export default function Home() {
                         );
                     })}
 
-                    <button disabled={timer !== 0 || authUser !== null}>
+                    <button disabled={timer !== 0 || authUser === null}>
                         place
                     </button>
                 </form>

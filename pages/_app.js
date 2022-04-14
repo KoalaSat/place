@@ -1,11 +1,14 @@
 import '../styles/globals.css';
 
 import { AuthUserProvider } from '../shared/contexts/authUserContext';
+import { PixelsProvider } from '../shared/contexts/pixelsContext';
 
 function MyApp({ Component, pageProps }) {
     return (
         <AuthUserProvider>
-            <Component {...pageProps} />
+            <PixelsProvider>
+                <Component {...pageProps} />
+            </PixelsProvider>
         </AuthUserProvider>
     );
 }
