@@ -12,7 +12,7 @@ const CanvasInformation = ({ authUser, timer }) => {
 
     return (
         <p className="mb-2 t-center">
-            next pixel in: <span className="fw-800">{timer} seconds</span>
+            place pixel in: <span className="fw-800">{timer} seconds</span>
         </p>
     );
 };
