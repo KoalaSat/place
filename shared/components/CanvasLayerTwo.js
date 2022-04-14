@@ -19,6 +19,7 @@ const CanvasLayerTwo = ({ pixels }) => {
     }, []);
 
     useEffect(() => {
+        const allPixels = [];
         for (let i = 0; i < pixels.length; i++) {
             const pixel = pixels[i].pixel;
 
@@ -26,16 +27,21 @@ const CanvasLayerTwo = ({ pixels }) => {
                 continue;
             }
 
-            placePixel(pixel);
+            allPixels.push({ ...pixel, createdAt: pixels[i].lastUpdated });
+            allPixels.push(...pixels[i].previousPixels);
+        }
 
-            for (let j = 0; j < pixels[i].previousPixels.length; j++) {
-                const pixel = pixels[i].previousPixels[j];
-                if (pixel === 0) {
-                    continue;
-                }
-
-                placePixel(pixel);
+        allPixels = allPixels.filter(pixel => pixel !== 0);
+        allPixels.sort((a, b) => {
+            if (a.createdAt === null || b.createdAt === null) {
+                return -1;
             }
+
+            return a.createdAt.seconds - b.createdAt.seconds;
+        });
+
+        for (let i = 0; i < allPixels.length; i++) {
+            placePixel(allPixels[i]);
         }
     }, [pixels]);
 
