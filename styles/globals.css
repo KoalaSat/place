@@ -63,6 +63,10 @@ input:checked + .color-square {
     display: none;
 }
 
+.fw-800 {
+    font-weight: 800;
+}
+
 @media (min-width: 1200px) {
     .container {
         margin: 24px auto;
