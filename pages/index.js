@@ -65,6 +65,7 @@ export default function Home() {
             });
         }
 
+        setTimer(60);
         setSelectedPixel(null);
         const timerInterval = setInterval(() => {
             timerIntervalFunction(timerInterval);
