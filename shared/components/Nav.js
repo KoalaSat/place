@@ -6,12 +6,19 @@ import { useAuth } from '../contexts/authUserContext';
 
 const Nav = () => {
     const [continueWithGoogleError, setContinueWithGoogleError] = useState('');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const handleContinueWithGoogle = () => {
-        return continueWithGoogle().catch(() => {
-            setContinueWithGoogleError(
-                'Unable to get profile information from Google.'
-            );
-        });
+        setIsPopupOpen(true);
+        return continueWithGoogle()
+            .then(() => {
+                setIsPopupOpen(false);
+            })
+            .catch(() => {
+                setIsPopupOpen(false);
+                setContinueWithGoogleError(
+                    'Unable to get profile information from Google.'
+                );
+            });
     };
 
     const { authUser, continueWithGoogle, signOutUser } = useAuth();
@@ -26,6 +33,7 @@ const Nav = () => {
                 ) : (
                     <button
                         className="continue-with-google-button"
+                        disabled={isPopupOpen}
                         onClick={handleContinueWithGoogle}
                     >
                         <svg
