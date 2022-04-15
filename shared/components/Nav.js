@@ -9,6 +9,7 @@ const Nav = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const handleContinueWithGoogle = () => {
         setIsPopupOpen(true);
+        setContinueWithGoogleError('');
         return continueWithGoogle()
             .then(() => {
                 setIsPopupOpen(false);
