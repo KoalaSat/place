@@ -73,9 +73,6 @@ export default function Home() {
         }
 
         setSelectedPixel(null);
-        const timerInterval = setInterval(() => {
-            timerIntervalFunction(timerInterval);
-        }, 1000);
     };
 
     const { authUser, pixel } = useAuth();
@@ -88,6 +85,9 @@ export default function Home() {
                 setTimer(0);
             } else {
                 setTimer(60 - Math.floor(amountOfTimeSinceLastPlace));
+                const timerInterval = setInterval(() => {
+                    timerIntervalFunction(timerInterval);
+                }, 1000);
             }
         }
     }, [pixel]);
