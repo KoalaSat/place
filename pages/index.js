@@ -40,6 +40,8 @@ const COLORS = [
 export default function Home() {
     const [selectedPixel, setSelectedPixel] = useState(null);
     const [selectedPixelColor, setSelectedPixelColor] = useState(COLORS[0]);
+    const [isAttemptingToPlacePixel, setIsAttemptingToPlacePixel] =
+        useState(false);
 
     const { pixels } = usePixelsContext();
     const { timer, setTimer, timerIntervalFunction } = useTimer();
@@ -47,12 +49,15 @@ export default function Home() {
         event.preventDefault();
 
         if (!selectedPixel) return;
+        setIsAttemptingToPlacePixel(true);
         const db = getFirestore();
         if (pixel.pixel === 0) {
             updateDoc(doc(db, 'pixels', pixel.id), {
                 pixel: { ...selectedPixel, color: selectedPixelColor },
                 previousPixels: arrayUnion(0),
                 lastUpdated: serverTimestamp()
+            }).then(() => {
+                setIsAttemptingToPlacePixel(false);
             });
         } else {
             updateDoc(doc(db, 'pixels', pixel.id), {
@@ -62,6 +67,8 @@ export default function Home() {
                     createdAt: pixel.lastUpdated
                 }),
                 lastUpdated: serverTimestamp()
+            }).then(() => {
+                setIsAttemptingToPlacePixel(false);
             });
         }
 
@@ -132,7 +139,11 @@ export default function Home() {
                         </div>
                         <button
                             className="place-button"
-                            disabled={timer !== 0 || authUser === null}
+                            disabled={
+                                isAttemptingToPlacePixel ||
+                                timer !== 0 ||
+                                authUser === null
+                            }
                         >
                             place
                         </button>
