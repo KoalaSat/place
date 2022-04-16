@@ -44,7 +44,7 @@ export default function Home() {
         useState(false);
 
     const { pixels } = usePixelsContext();
-    const { timer, setTimer, timerIntervalFunction } = useTimer();
+    const { timer, setTimer } = useTimer();
     const handlePlacePixel = event => {
         event.preventDefault();
 
@@ -73,9 +73,6 @@ export default function Home() {
         }
 
         setSelectedPixel(null);
-        const timerInterval = setInterval(() => {
-            timerIntervalFunction(timerInterval);
-        }, 1000);
     };
 
     const { authUser, pixel } = useAuth();

@@ -1,32 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const useTimer = () => {
     const [timer, setTimer] = useState(60);
-    const timerIntervalFunction = timerInterval => {
-        setTimer(previousTimer => {
-            if (previousTimer === 0) {
-                clearInterval(timerInterval);
-                return 0;
-            }
-
-            return previousTimer - 1;
-        });
-    };
-
+    const intervalID = useRef(null);
     useEffect(() => {
-        const timerInterval = setInterval(() => {
-            timerIntervalFunction(timerInterval);
-        }, 1000);
+        if (intervalID.current === null && timer !== 0) {
+            const timerInterval = setInterval(() => {
+                setTimer(previousTimer => {
+                    if (previousTimer === 0) {
+                        intervalID.current = null;
+                        clearInterval(timerInterval);
+                        return 0;
+                    }
+
+                    return previousTimer - 1;
+                });
+            }, 1000);
+
+            intervalID.current = timerInterval;
+        }
 
         return () => {
-            clearInterval(timerInterval);
+            clearInterval(intervalID.current);
+            intervalID.current = null;
         };
-    }, []);
+    }, [timer]);
 
     return {
         timer,
-        setTimer,
-        timerIntervalFunction
+        setTimer
     };
 };
 
