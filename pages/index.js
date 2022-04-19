@@ -20,21 +20,21 @@ import {
 
 const COLORS = [
     '#222222',
-    '#E4E4E4',
     '#888888',
+    '#E4E4E4',
+    '#FFFFFF',
     '#E50000',
-    '#E59500',
     '#A06A42',
+    '#E59500',
     '#E5D900',
     '#02BE01',
     '#94E044',
+    '#0000EA',
+    '#0083C7',
     '#00D3DD',
     '#820080',
-    '#0083C7',
-    '#FFFFFF',
-    '#FFA7D1',
-    '#0000EA',
-    '#CF6EE4'
+    '#CF6EE4',
+    '#FFA7D1'
 ];
 
 export default function Home() {
