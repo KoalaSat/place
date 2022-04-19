@@ -80,12 +80,13 @@ header {
 
 .colors {
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
 }
 
 .colors__square {
+    flex: 1 1 auto;
     min-height: 50px;
-    width: 20%;
+    max-height: 100px;
 }
 
 .color-square {
