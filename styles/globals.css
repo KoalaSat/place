@@ -52,8 +52,9 @@ h1 {
 
 header {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .header-left {
@@ -217,7 +218,12 @@ input:checked + .color-square {
 
 @media (min-width: 800px) {
     header {
+        align-items: normal;
         flex-direction: row;
+    }
+
+    .header-left {
+        margin: 0;
     }
 
     .features {
