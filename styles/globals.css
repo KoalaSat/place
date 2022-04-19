@@ -41,6 +41,52 @@ p {
     margin: 8px 0;
 }
 
+h1 {
+    margin: 8px 0;
+}
+
+.landing-page-container {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.header-cta {
+    transition: transform 0.5s ease-in-out;
+}
+
+.header-cta:hover {
+    transform: translateY(-5px);
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+}
+
+.colors {
+    display: flex;
+    flex: 1;
+}
+
+.colors__square {
+    min-height: 50px;
+    width: 20%;
+}
+
 .color-square {
     border: 1px solid #808080;
     display: block;
@@ -56,7 +102,7 @@ input:checked + .color-square {
 }
 
 .container {
-    margin: 8px;
+    padding: 8px;
 }
 
 .app-container {
@@ -102,6 +148,10 @@ input:checked + .color-square {
     width: 24px;
 }
 
+.mh-100 {
+    min-height: 100vh;
+}
+
 .d-none {
     display: none;
 }
@@ -116,6 +166,19 @@ input:checked + .color-square {
 
 .mb-2 {
     margin-bottom: 16px;
+}
+
+.p-2 {
+    padding: 16px;
+}
+
+.fs-2 {
+    font-size: 20px;
+}
+
+.bg-color-pink {
+    background-color: #e8c5e8;
+    color: #000000;
 }
 
 .color-red {
@@ -152,9 +215,21 @@ input:checked + .color-square {
     color: #ffbfbf;
 }
 
+@media (min-width: 800px) {
+    header {
+        flex-direction: row;
+    }
+
+    .features {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
 @media (min-width: 1200px) {
     .container {
-        margin: 24px auto;
+        margin: 0 auto;
         max-width: 1200px;
+        padding: 24px 0;
     }
 }
