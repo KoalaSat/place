@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 const PIXEL_SIZE = 10;
 
-const CanvasLayerTwo = ({ pixels }) => {
+const CanvasLayerTwo = ({ pixels, canvasLayerTwoRef }) => {
     const canvasRef = useRef();
     const placePixel = pixel => {
         const context = canvasRef.current.getContext('2d');
@@ -16,6 +16,8 @@ const CanvasLayerTwo = ({ pixels }) => {
         const context = canvasRef.current.getContext('2d');
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, 340, 340);
+
+        canvasLayerTwoRef.current = canvasRef.current;
     }, []);
 
     useEffect(() => {

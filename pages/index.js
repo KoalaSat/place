@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 
 import Nav from '../shared/components/Nav';
@@ -89,6 +89,8 @@ export default function Home() {
         }
     }, [pixel]);
 
+    const canvasLayerTwoRef = useRef(null);
+
     return (
         <div>
             <Head>
@@ -104,8 +106,14 @@ export default function Home() {
                     <CanvasInformation authUser={authUser} timer={timer} />
 
                     <div className="canvas-container">
-                        <CanvasLayerTwo pixels={pixels} />
-                        <CanvasLayerOne setSelectedPixel={setSelectedPixel} />
+                        <CanvasLayerTwo
+                            pixels={pixels}
+                            canvasLayerTwoRef={canvasLayerTwoRef}
+                        />
+                        <CanvasLayerOne
+                            setSelectedPixel={setSelectedPixel}
+                            canvasLayerTwoRef={canvasLayerTwoRef}
+                        />
                     </div>
 
                     <form onSubmit={handlePlacePixel}>
