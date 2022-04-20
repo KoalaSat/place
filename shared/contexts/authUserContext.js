@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 
+import SplashScreen from '../components/SplashScreen';
+
 import useFirebaseAuth from '../hooks/useFirebaseAuth';
 
 const authUserContext = createContext({
@@ -13,7 +15,7 @@ export const AuthUserProvider = ({ children }) => {
     const auth = useFirebaseAuth();
 
     if (auth.loading) {
-        return <div>loading...</div>;
+        return <SplashScreen />;
     }
 
     return (

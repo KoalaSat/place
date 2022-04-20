@@ -145,6 +145,14 @@ input:checked + .color-square {
     padding: 4px 8px;
 }
 
+.splash-screen {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+}
+
 .icon {
     height: 24px;
     width: 24px;
@@ -162,6 +170,10 @@ input:checked + .color-square {
     font-weight: 800;
 }
 
+.mt-2 {
+    margin-top: 16px;
+}
+
 .mr-1 {
     margin-right: 8px;
 }
@@ -176,6 +188,10 @@ input:checked + .color-square {
 
 .fs-2 {
     font-size: 20px;
+}
+
+.fs-6 {
+    font-size: 28px;
 }
 
 .bg-color-pink {
