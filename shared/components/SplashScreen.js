@@ -15,7 +15,7 @@ const SplashScreen = () => {
             <div className="splash-screen">
                 <Image src={placeLogo} alt="place logo" />
 
-                <div className="mt-2 fs-6 fw-800">place</div>
+                <div className="mt-2 fs-6 fw-700">place</div>
             </div>
         </React.Fragment>
     );

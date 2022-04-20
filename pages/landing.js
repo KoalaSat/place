@@ -55,13 +55,13 @@ export default function Home() {
                 <section className="bg-color-pink">
                     <div className="container features p-2">
                         <div>
-                            <div className="fw-800">colors</div>
+                            <div className="fw-700">colors</div>
 
                             <p>16 colors and endless options</p>
                         </div>
 
                         <div>
-                            <div className="fw-800">work together</div>
+                            <div className="fw-700">work together</div>
                             <p>groups are stronger than individuals</p>
                         </div>
                     </div>
