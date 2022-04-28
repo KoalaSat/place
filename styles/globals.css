@@ -92,8 +92,8 @@ header {
 .color-square {
     border: 1px solid #808080;
     display: block;
-    width: 34.51px;
-    height: 34.51px;
+    width: 24px;
+    height: 24px;
     margin: 8px 8px 0 0;
 
     cursor: pointer;
