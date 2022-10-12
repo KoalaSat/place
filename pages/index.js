@@ -50,6 +50,7 @@ export default function Home() {
 
         if (!selectedPixel) return;
         setIsAttemptingToPlacePixel(true);
+        setTimer(60);
         const db = getFirestore();
         if (pixel.pixel === 0) {
             updateDoc(doc(db, 'pixels', pixel.id), {
