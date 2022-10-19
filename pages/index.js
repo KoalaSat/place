@@ -121,7 +121,10 @@ export default function Home() {
                         <div className="colors-container mb-2">
                             {COLORS.map(color => {
                                 return (
-                                    <div key={color}>
+                                    <div
+                                        key={color}
+                                        className="color-container"
+                                    >
                                         <input
                                             onClick={() =>
                                                 setSelectedPixelColor(color)
